@@ -10,19 +10,19 @@ namespace Polymarket.ClobClient.Tests.Utilities
     {
         private class SignedOrderTest
         {
-            public string salt { get; set; }
-            public string maker { get; set; }
-            public string signer { get; set; }
-            public string taker { get; set; }
-            public string tokenId { get; set; }
-            public string makerAmount { get; set; }
-            public string takerAmount { get; set; }
+            public string? salt { get; set; }
+            public string? maker { get; set; }
+            public string? signer { get; set; }
+            public string? taker { get; set; }
+            public string? tokenId { get; set; }
+            public string? makerAmount { get; set; }
+            public string? takerAmount { get; set; }
             public int side { get; set; }
-            public string expiration { get; set; }
-            public string nonce { get; set; }
-            public string feeRateBps { get; set; }
+            public string? expiration { get; set; }
+            public string? nonce { get; set; }
+            public string? feeRateBps { get; set; }
             public int signatureType { get; set; }
-            public string signature { get; set; }
+            public string? signature { get; set; }
         }
 
         private static JObject OrderToJson(SignedOrderTest order, string owner, OrderType orderType, bool deferExec = false)
@@ -32,7 +32,7 @@ namespace Polymarket.ClobClient.Tests.Utilities
             var jo = new JObject(
                 new JProperty("deferExec", deferExec),
                 new JProperty("order", new JObject(
-                    new JProperty("salt", int.Parse(order.salt)),
+                    new JProperty("salt", int.Parse(order.salt!)),
                     new JProperty("maker", order.maker),
                     new JProperty("signer", order.signer),
                     new JProperty("taker", order.taker),

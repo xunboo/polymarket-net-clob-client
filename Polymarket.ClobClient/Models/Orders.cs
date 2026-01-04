@@ -5,7 +5,7 @@ namespace Polymarket.ClobClient.Models
     public class UserOrder
     {
         [JsonProperty("tokenID")]
-        public string TokenId { get; set; }
+        public string TokenId { get; set; } = string.Empty;
 
         [JsonProperty("price")]
         public decimal Price { get; set; }
@@ -32,7 +32,7 @@ namespace Polymarket.ClobClient.Models
     public class UserMarketOrder
     {
         [JsonProperty("tokenID")]
-        public string TokenId { get; set; }
+        public string TokenId { get; set; } = string.Empty;
 
         [JsonProperty("price")]
         public decimal? Price { get; set; }
@@ -59,40 +59,40 @@ namespace Polymarket.ClobClient.Models
     public class OrderSummary
     {
         [JsonProperty("price")]
-        public string Price { get; set; }
+        public string Price { get; set; } = string.Empty;
 
         [JsonProperty("size")]
-        public string Size { get; set; }
+        public string Size { get; set; } = string.Empty;
     }
 
     public class OrderBookSummary
     {
         [JsonProperty("market")]
-        public string Market { get; set; }
+        public string Market { get; set; } = string.Empty;
 
         [JsonProperty("asset_id")]
-        public string AssetId { get; set; }
+        public string AssetId { get; set; } = string.Empty;
 
         [JsonProperty("timestamp")]
-        public string Timestamp { get; set; }
+        public string Timestamp { get; set; } = string.Empty;
 
         [JsonProperty("bids")]
-        public List<OrderSummary> Bids { get; set; }
+        public List<OrderSummary> Bids { get; set; } = new List<OrderSummary>();
 
         [JsonProperty("asks")]
-        public List<OrderSummary> Asks { get; set; }
+        public List<OrderSummary> Asks { get; set; } = new List<OrderSummary>();
 
         [JsonProperty("min_order_size")]
-        public string MinOrderSize { get; set; }
+        public string MinOrderSize { get; set; } = string.Empty;
 
         [JsonProperty("tick_size")]
-        public string TickSize { get; set; }
+        public string TickSize { get; set; } = string.Empty;
 
         [JsonProperty("neg_risk")]
         public bool NegRisk { get; set; }
 
         [JsonProperty("hash")]
-        public string Hash { get; set; }
+        public string Hash { get; set; } = string.Empty;
     }
 
     public class RoundConfig

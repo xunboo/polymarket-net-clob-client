@@ -6,15 +6,15 @@ namespace Polymarket.ClobClient.Signing
     public class ClobAuth
     {
         [Parameter("address", "address", 1)]
-        public string Address { get; set; }
+        public string Address { get; set; } = string.Empty;
 
         [Parameter("string", "timestamp", 2)]
-        public string Timestamp { get; set; }
+        public string Timestamp { get; set; } = string.Empty;
 
         [Parameter("uint256", "nonce", 3)]
         public System.Numerics.BigInteger Nonce { get; set; }
 
         [Parameter("string", "message", 4)]
-        public string Message { get; set; }
+        public string Message { get; set; } = string.Empty;
     }
 }

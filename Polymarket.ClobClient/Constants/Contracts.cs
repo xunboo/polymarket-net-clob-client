@@ -2,11 +2,11 @@ namespace Polymarket.ClobClient.Constants
 {
     public class ContractConfig
     {
-        public string Exchange { get; set; }
-        public string NegRiskAdapter { get; set; }
-        public string NegRiskExchange { get; set; }
-        public string Collateral { get; set; }
-        public string ConditionalTokens { get; set; }
+        public string Exchange { get; set; } = string.Empty;
+        public string NegRiskAdapter { get; set; } = string.Empty;
+        public string NegRiskExchange { get; set; } = string.Empty;
+        public string Collateral { get; set; } = string.Empty;
+        public string ConditionalTokens { get; set; } = string.Empty;
     }
 
     public static class Contracts

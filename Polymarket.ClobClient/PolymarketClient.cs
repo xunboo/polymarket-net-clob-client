@@ -10,18 +10,22 @@ namespace Polymarket.ClobClient
     {
         public readonly string Host;
         public readonly int ChainId;
-        public readonly Account Account;
-        public ApiKeyCreds Creds;
+        public readonly Account? Account;
+        public ApiKeyCreds? Creds;
         
         private readonly HttpHelper _httpHelper;
 
-        public PolymarketClient(string host, int chainId, string privateKey, ApiKeyCreds creds = null)
+        public PolymarketClient(string host, int chainId, string? privateKey, ApiKeyCreds? creds = null)
         {
             Host = host.TrimEnd('/');
             ChainId = chainId;
             if (!string.IsNullOrEmpty(privateKey))
             {
                 Account = new Account(privateKey, chainId);
+            }
+            else
+            {
+                Account = null;
             }
             Creds = creds;
             
@@ -34,18 +38,18 @@ namespace Polymarket.ClobClient
         private async Task<Dictionary<string, string>> CreateL1Headers(int nonce = 0)
         {
             var timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-            var sig = SignerUtils.BuildClobEip712Signature(Account.PrivateKey, ChainId, timestamp, nonce);
+            var sig = SignerUtils.BuildClobEip712Signature(Account!.PrivateKey, ChainId, timestamp, nonce);
             
             return new Dictionary<string, string>
             {
-                { "POLY_ADDRESS", Account.Address },
+                { "POLY_ADDRESS", Account!.Address },
                 { "POLY_SIGNATURE", sig },
                 { "POLY_TIMESTAMP", timestamp.ToString() },
                 { "POLY_NONCE", nonce.ToString() }
             };
         }
 
-        private Dictionary<string, string> CreateL2Headers(string method, string requestPath, object body = null)
+        private Dictionary<string, string> CreateL2Headers(string method, string requestPath, object? body = null)
         {
             if (Creds == null) throw new Exception("API Credentials (L2) are not set.");
 
@@ -53,7 +57,7 @@ namespace Polymarket.ClobClient
             var bodyStr = body != null ? Newtonsoft.Json.JsonConvert.SerializeObject(body) : "";
             
             var sig = SignerUtils.BuildPolyHmacSignature(
-                Creds.Secret, 
+                Creds!.Secret, 
                 timestamp, 
                 method, 
                 requestPath, 
@@ -62,11 +66,11 @@ namespace Polymarket.ClobClient
 
             return new Dictionary<string, string>
             {
-                { "POLY_ADDRESS", Account.Address },
+                { "POLY_ADDRESS", Account!.Address },
                 { "POLY_SIGNATURE", sig },
                 { "POLY_TIMESTAMP", timestamp.ToString() },
-                { "POLY_API_KEY", Creds.Key },
-                { "POLY_PASSPHRASE", Creds.Passphrase }
+                { "POLY_API_KEY", Creds!.Key },
+                { "POLY_PASSPHRASE", Creds!.Passphrase }
             };
         }
 
@@ -167,8 +171,8 @@ namespace Polymarket.ClobClient
             var orderStruct = new OrderStruct
             {
                 Salt = salt,
-                Maker = Account.Address,
-                Signer = Account.Address,
+                Maker = Account!.Address,
+                Signer = Account!.Address,
                 Taker = taker,
                 TokenId = System.Numerics.BigInteger.Parse(order.TokenId),
                 MakerAmount = makerAmount,
@@ -202,7 +206,7 @@ namespace Polymarket.ClobClient
             // For now assume standard.
             var exchangeAddr = contractConfig.Exchange;
             
-            var signature = OrderSigner.SignOrder(orderStruct, Account.PrivateKey, ChainId, exchangeAddr);
+            var signature = OrderSigner.SignOrder(orderStruct, Account!.PrivateKey, ChainId, exchangeAddr);
 
             // 6. Build Request Body
             // The body expects "order" object with all fields + signature string
@@ -226,7 +230,7 @@ namespace Polymarket.ClobClient
             var payload = new
             {
                 order = signedOrder,
-                owner = Creds.Key,
+                owner = Creds!.Key,
                 orderType = orderType.ToString().ToUpper(), // GTC, FOK etc.
             };
 
@@ -252,7 +256,7 @@ namespace Polymarket.ClobClient
         private class TickSizeResponse
         {
             [Newtonsoft.Json.JsonProperty("minimum_tick_size")]
-            public string MinimumTickSize { get; set; }
+            public string MinimumTickSize { get; set; } = string.Empty;
         }
     }
 }

@@ -10,13 +10,13 @@ namespace Polymarket.ClobClient.Signing
         public BigInteger Salt { get; set; }
 
         [Parameter("address", "maker", 2)]
-        public string Maker { get; set; }
+        public string Maker { get; set; } = string.Empty;
 
         [Parameter("address", "signer", 3)]
-        public string Signer { get; set; }
+        public string Signer { get; set; } = string.Empty;
 
         [Parameter("address", "taker", 4)]
-        public string Taker { get; set; }
+        public string Taker { get; set; } = string.Empty;
 
         [Parameter("uint256", "tokenId", 5)]
         public BigInteger TokenId { get; set; }

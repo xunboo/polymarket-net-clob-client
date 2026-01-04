@@ -15,7 +15,7 @@ namespace Polymarket.ClobClient.Utilities
             _baseUrl = baseUrl.TrimEnd('/');
         }
         
-        public async Task<T> GetAsync<T>(string endpoint, Dictionary<string, string> headers = null, Dictionary<string, object> queryParams = null)
+        public async Task<T> GetAsync<T>(string endpoint, Dictionary<string, string>? headers = null, Dictionary<string, object>? queryParams = null)
         {
             var url = BuildUrl(endpoint, queryParams);
             var request = new HttpRequestMessage(HttpMethod.Get, url);
@@ -25,7 +25,7 @@ namespace Polymarket.ClobClient.Utilities
             return await HandleResponse<T>(response);
         }
 
-        public async Task<T> PostAsync<T>(string endpoint, object data, Dictionary<string, string> headers = null)
+        public async Task<T> PostAsync<T>(string endpoint, object? data = null, Dictionary<string, string>? headers = null)
         {
             var url = BuildUrl(endpoint);
             var request = new HttpRequestMessage(HttpMethod.Post, url);
@@ -41,7 +41,7 @@ namespace Polymarket.ClobClient.Utilities
             return await HandleResponse<T>(response);
         }
 
-        public async Task<T> DeleteAsync<T>(string endpoint, object data = null, Dictionary<string, string> headers = null)
+        public async Task<T> DeleteAsync<T>(string endpoint, object? data = null, Dictionary<string, string>? headers = null)
         {
             var url = BuildUrl(endpoint); 
             // HttpClient DELETE with body is tricky, typically better to use SendAsync with HttpRequestMessage
@@ -58,7 +58,7 @@ namespace Polymarket.ClobClient.Utilities
             return await HandleResponse<T>(response);
         }
 
-        private string BuildUrl(string endpoint, Dictionary<string, object> queryParams = null)
+        private string BuildUrl(string endpoint, Dictionary<string, object>? queryParams = null)
         {
             var url = $"{_baseUrl}{endpoint}";
             if (queryParams != null && queryParams.Count > 0)
@@ -69,7 +69,7 @@ namespace Polymarket.ClobClient.Utilities
             return url;
         }
 
-        private void AddHeaders(HttpRequestMessage request, Dictionary<string, string> headers)
+        private void AddHeaders(HttpRequestMessage request, Dictionary<string, string>? headers)
         {
             if (headers != null)
             {
@@ -93,8 +93,9 @@ namespace Polymarket.ClobClient.Utilities
              {
                  return (T)(object)content;
              }
-             
-             return JsonConvert.DeserializeObject<T>(content);
+
+             // Deserialize and assert non-null (or let exception bubble if unexpected)
+             return JsonConvert.DeserializeObject<T>(content)!;
         }
     }
 }
