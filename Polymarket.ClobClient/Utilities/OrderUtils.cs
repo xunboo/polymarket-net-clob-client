@@ -93,6 +93,59 @@ namespace Polymarket.ClobClient.Utilities
             }
         }
         
+        public static decimal CalculateBuyMarketPrice(List<OrderSummary> positions, decimal amountToMatch, OrderType orderType)
+        {
+            if (positions == null || positions.Count == 0)
+            {
+                throw new Exception("no match");
+            }
+
+            decimal sum = 0;
+            // iterate from end to start (asks highest -> lowest in TS test ordering)
+            for (int i = positions.Count - 1; i >= 0; i--)
+            {
+                var p = positions[i];
+                sum += decimal.Parse(p.Size) * decimal.Parse(p.Price);
+                if (sum >= amountToMatch)
+                {
+                    return decimal.Parse(p.Price);
+                }
+            }
+
+            if (orderType == OrderType.Fok)
+            {
+                throw new Exception("no match");
+            }
+
+            return decimal.Parse(positions[0].Price);
+        }
+
+        public static decimal CalculateSellMarketPrice(List<OrderSummary> positions, decimal amountToMatch, OrderType orderType)
+        {
+            if (positions == null || positions.Count == 0)
+            {
+                throw new Exception("no match");
+            }
+
+            decimal sum = 0;
+            for (int i = positions.Count - 1; i >= 0; i--)
+            {
+                var p = positions[i];
+                sum += decimal.Parse(p.Size);
+                if (sum >= amountToMatch)
+                {
+                    return decimal.Parse(p.Price);
+                }
+            }
+
+            if (orderType == OrderType.Fok)
+            {
+                throw new Exception("no match");
+            }
+
+            return decimal.Parse(positions[0].Price);
+        }
+        
         public static BigInteger ParseUnits(decimal amount, int decimals)
         {
              return Web3.Convert.ToWei(amount, decimals);
