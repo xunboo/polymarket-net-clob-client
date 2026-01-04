@@ -2,6 +2,8 @@
 
 A C# .NET Class Library for interacting with the Polymarket CLOB (Central Limit Order Book) API. This is a port of the official TypeScript [clob-client](https://github.com/Polymarket/clob-client).
 
+This library is converted by AI and currently in beta and is not yet ready for production use. Use at your own risk.
+
 ## Installation
 
 ```bash
