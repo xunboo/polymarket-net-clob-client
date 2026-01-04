@@ -1,0 +1,5 @@
+.vs/*
+Polymarket.ClobClient.Tests/bin/*
+Polymarket.ClobClient.Tests/obj/*
+Polymarket.ClobClient/bin/*
+Polymarket.ClobClient/obj/*
